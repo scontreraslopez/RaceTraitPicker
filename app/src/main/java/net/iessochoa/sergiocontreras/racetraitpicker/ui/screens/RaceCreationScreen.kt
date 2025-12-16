@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import net.iessochoa.sergiocontreras.racetraitpicker.data.RaceTraitsRepository
 import net.iessochoa.sergiocontreras.racetraitpicker.model.RaceOption
 import net.iessochoa.sergiocontreras.racetraitpicker.model.TraitsCategories
@@ -16,18 +18,27 @@ import net.iessochoa.sergiocontreras.racetraitpicker.ui.components.CategoryOptio
 import net.iessochoa.sergiocontreras.racetraitpicker.ui.theme.RaceTraitPickerTheme
 
 @Composable
-fun RaceCreationScreen(modifier: Modifier = Modifier) {
+fun RaceCreationScreen(
+    modifier: Modifier = Modifier,
+    uiState: RaceCreationUiState = RaceCreationUiState(),
+    onPopulationOptionClick: (RaceOption) -> Unit,
+    onAgricultureOptionClick: (RaceOption) -> Unit
+) {
 
-    val populationOptions = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.POPULATION)
-    val agricultureOptions = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.AGRICULTURE)
+    val populationOptions = uiState.populationOptions
+    val agricultureOptions = uiState.agricultureOptions
+
+    val remainingPoints = uiState.remainingPoints
+
+    //var remainingPoints by remember { mutableIntStateOf(10) }
 
 
-    var selectedPopulationOption by remember { mutableStateOf(populationOptions[1]) }
-    val onPopulationOptionClick: (RaceOption) -> Unit = {selectedPopulationOption = it}
-    var selectedAgricultureOption by remember { mutableStateOf(agricultureOptions[1]) }
-    val onAgricultureOptionClick: (RaceOption) -> Unit = {selectedAgricultureOption = it}
+    val selectedPopulationOption = uiState.selectedPopulationOption
+    val selectedAgricultureOption = uiState.selectedAgricultureOption
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         CategoryOptions(
             categoryName = TraitsCategories.POPULATION.name,
             options = populationOptions,
@@ -41,14 +52,25 @@ fun RaceCreationScreen(modifier: Modifier = Modifier) {
             onOptionClick = onAgricultureOptionClick
         )
 
+        Text(
+            text = "Remaining points: ${remainingPoints.toString()}"
+        )
+
+
+
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun RaceCreationScreenPreview() {
     RaceTraitPickerTheme() {
-       RaceCreationScreen()
+       RaceCreationScreen(
+           onPopulationOptionClick = {},
+           onAgricultureOptionClick = {}
+       )
     }
 }
+
 
