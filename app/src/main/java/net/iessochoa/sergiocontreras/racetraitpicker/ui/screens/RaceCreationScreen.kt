@@ -39,6 +39,14 @@ fun RaceCreationScreen(
     Column(
         modifier = modifier
     ) {
+        val populationOptions = populationOptions.map { option ->
+            Pair(option, option.optionCost <= (remainingPoints + selectedPopulationOption.optionCost))
+        }
+
+        val agricultureOptions = agricultureOptions.map { option ->
+            Pair(option, option.optionCost <= remainingPoints  + selectedAgricultureOption.optionCost)
+        }
+
         CategoryOptions(
             categoryName = TraitsCategories.POPULATION.name,
             options = populationOptions,

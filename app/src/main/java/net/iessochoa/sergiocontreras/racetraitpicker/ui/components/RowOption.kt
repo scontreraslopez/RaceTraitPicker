@@ -16,6 +16,7 @@ import net.iessochoa.sergiocontreras.racetraitpicker.ui.theme.RaceTraitPickerThe
 @Composable
 fun RowOption(
     isSelected: Boolean,
+    isEnabled: Boolean,
     onOptionClick: (RaceOption) -> Unit,
     option: RaceOption,
     modifier: Modifier = Modifier
@@ -31,6 +32,7 @@ fun RowOption(
     ) {
         RadioButton(
             selected = isSelected,
+            enabled = isEnabled,
             onClick = {onOptionClick(option)}
         )
         Text(
@@ -55,6 +57,7 @@ fun RowOptionPreview() {
     RaceTraitPickerTheme() {
         RowOption(
             isSelected = true,
+            isEnabled = true,
             onOptionClick = {},
             option = option
         )

@@ -8,5 +8,13 @@ data class RaceOption(
 
 enum class TraitsCategories() {
     POPULATION,
-    AGRICULTURE
+    FARMING,
+    INDUSTRY,
+    SCIENCE,
+    MONEY,
+    SHIP_DEFENSE,
+    SHIP_ATTACK,
+    SPYING,
+    GOVERNMENTS,
+    SPECIAL
 }

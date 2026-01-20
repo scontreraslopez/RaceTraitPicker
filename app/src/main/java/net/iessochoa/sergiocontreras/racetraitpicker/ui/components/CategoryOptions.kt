@@ -14,7 +14,7 @@ import net.iessochoa.sergiocontreras.racetraitpicker.ui.theme.Typography
 @Composable
 fun CategoryOptions(
     categoryName: String,
-    options: List<RaceOption>,
+    options: List<Pair<RaceOption, Boolean>>,
     selectedOption: RaceOption,
     onOptionClick: (RaceOption) -> Unit,
     modifier: Modifier = Modifier
@@ -27,9 +27,11 @@ fun CategoryOptions(
             text = categoryName,
             style = Typography.headlineMedium
         )
-        options.forEach { option ->
+        options.forEach { tuple ->
+            val (option, isEnabled) = tuple
             RowOption(
                 isSelected = option == selectedOption,
+                isEnabled = isEnabled,
                 onOptionClick = { onOptionClick(option) },
                 option = option
             )
@@ -39,17 +41,23 @@ fun CategoryOptions(
 
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun CategoryOptionsPreview() {
 
     val categoryNamePreview = TraitsCategories.POPULATION.name
     val racePopulationOptions = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.POPULATION)
+    val options = racePopulationOptions.map { option ->
+        Pair(option, true)
+    }
+
+
 
     RaceTraitPickerTheme() {
         CategoryOptions(
             categoryName = categoryNamePreview,
-            options = racePopulationOptions,
+            options = options,
             selectedOption = racePopulationOptions[0],
             onOptionClick = { }
         )
