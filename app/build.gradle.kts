@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias (libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -43,13 +44,25 @@ android {
 
 dependencies {
 
-    val lifecycle_version = "2.10.0"
-    val arch_version = "2.2.0"
+    // Runtime de Kotlin Serialization (JSON)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Retrofit core
+    implementation(libs.retrofit)
+
+    // Converter oficial de Retrofit para kotlinx.serialization (NO Jake Wharton)
+    implementation(libs.converter.kotlinx.serialization)
+
+    // Coil para Compose
+    implementation(libs.coil.compose)
+
+
+    implementation(libs.androidx.navigation.compose)
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     // ViewModel utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
