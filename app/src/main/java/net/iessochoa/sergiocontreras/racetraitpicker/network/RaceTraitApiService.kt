@@ -7,6 +7,6 @@ import retrofit2.http.POST
 interface RaceTraitApiService {
 
     @GET("options")
-    suspend fun getRaceOptions(): List<optionDtoResponse>
+    suspend fun getRaceOptions(): CategoriesDto
 
 }

@@ -15,6 +15,7 @@ object RaceTraitsRepository {
 
     private val json = Json {
         ignoreUnknownKeys = true
+        coerceInputValues = true
     }
 
     private val retrofit: Retrofit by lazy {
@@ -28,7 +29,66 @@ object RaceTraitsRepository {
         retrofit.create(RaceTraitApiService::class.java)
     }
 
+    //suspend fun getRaceOptions() = retrofitService.getRaceOptions()
 
+    suspend fun getRaceOptionsByCategory(category: TraitsCategories): List<RaceOption> {
+
+        val categoriesDto = retrofitService.getRaceOptions()
+
+        val raceOptions: List<RaceOption> = categoriesDto.categories.map { category ->
+            val categoryName: String = category.name
+            var raceOptionsList = mutableListOf<RaceOption>()
+
+            raceOptionsList.add(
+                category.options.map { option ->
+                    RaceOption(
+                        optionDescription = option.name,
+                        optionCost = option.cost,
+                        optionCategory  = categoryName
+                    )
+                }
+            )
+
+            }
+        }
+
+
+        //Tengo que convertir el DTO a una lista de RaceOption
+
+    }
+
+    /**
+    fun getRaceOptionsByCategory(category: TraitsCategories): List<RaceOption> {
+        return traits.filter {
+            it.optionCategory == category
+        }
+    }
+
+    */
+    /**
+    private val baseUrl = "https://rickandmortyapi.com/api/"
+
+    //Empezamos a inicializar primero Retrofit, siempre lazy.
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .addConverterFactory(Json {
+                ignoreUnknownKeys = true
+                coerceInputValues = true
+            }.asConverterFactory("application/json".toMediaType()))
+            .baseUrl(baseUrl)
+            .build()
+    }
+
+    private val retrofitService: RickAndMortyApiService by lazy {
+        retrofit.create(RickAndMortyApiService::class.java)
+    }
+
+    suspend fun getCharacters() = retrofitService.getCharacters()
+    */
+
+
+
+/**
     private val traits = listOf<RaceOption>(
         RaceOption(
             optionDescription = "-50% Growth",
@@ -79,7 +139,7 @@ object RaceTraitsRepository {
         }
     }
 
-
+    */
 
     //Empezamos a inicializar primero Retrofit, siempre lazy.
 
