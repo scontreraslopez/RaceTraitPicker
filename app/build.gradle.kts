@@ -41,6 +41,7 @@ android {
             jvmTarget = JvmTarget.JVM_11
         }
     }
+
     buildFeatures {
         compose = true
     }
