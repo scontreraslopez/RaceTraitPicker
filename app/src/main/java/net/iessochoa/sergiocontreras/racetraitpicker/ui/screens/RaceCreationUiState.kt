@@ -14,10 +14,10 @@ data class RaceCreationUiState (
 
 /* Como ahora es nullable vamos a gestionar los estados para que no cortocircuite
 * Sealed interface para when táctico */
-sealed interface RaceCreationUiDataState {
-    data class Success(val raceCreationUiState: RaceCreationUiState): RaceCreationUiDataState
-    object Error: RaceCreationUiDataState
-    object Loading: RaceCreationUiDataState
-    object Empty: RaceCreationUiDataState
+sealed interface RaceCreationUiStatus {
+    data class Success(val raceCreationUiState: RaceCreationUiState): RaceCreationUiStatus
+    object Error: RaceCreationUiStatus
+    object Loading: RaceCreationUiStatus
+    object Empty: RaceCreationUiStatus
 }
 
