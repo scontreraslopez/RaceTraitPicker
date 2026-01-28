@@ -45,23 +45,32 @@ fun CategoryOptions(
 @Preview(showBackground = true)
 @Composable
 fun CategoryOptionsPreview() {
-
+    /* Fixeo rapido y feo de la categoria de poblacion para el preview */
     val categoryNamePreview = TraitsCategories.POPULATION.name
-    val racePopulationOptions = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.POPULATION)
+    val racePopulationOptions = listOf(
+        RaceOption(
+            optionDescription = "Población densa",
+            optionCost =2,
+            optionCategory = TraitsCategories.POPULATION ),
+        RaceOption(
+            optionDescription = "Población media",
+            optionCost =1,
+            optionCategory = TraitsCategories.POPULATION ),
+        RaceOption(
+            optionDescription = "Población baja",
+            optionCost =0,
+            optionCategory = TraitsCategories.POPULATION )
+    )
     val options = racePopulationOptions.map { option ->
         Pair(option, true)
     }
 
-
-
-    RaceTraitPickerTheme() {
+    RaceTraitPickerTheme {
         CategoryOptions(
             categoryName = categoryNamePreview,
             options = options,
-            selectedOption = racePopulationOptions[0],
+            selectedOption = racePopulationOptions.first(),
             onOptionClick = { }
         )
     }
 }
-
-

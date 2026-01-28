@@ -29,125 +29,41 @@ object RaceTraitsRepository {
         retrofit.create(RaceTraitApiService::class.java)
     }
 
-    //suspend fun getRaceOptions() = retrofitService.getRaceOptions()
-
     suspend fun getRaceOptionsByCategory(category: TraitsCategories): List<RaceOption> {
 
+        /** Casi nada este mapeo... con razón estaba atascado
+         *
+         * Pero bueno más allá de lo enrevesado de la transformación esto es porque
+         * tenemos que transfomar el DTO en una lista de RaceOption (modelo)
+         * y como estaba muy improvisado se complica.
+         *
+         * Con mejor tino DTO y modelo pueden ser unificado.
+         *
+         * Ejemplo si DTO y modelo son iguales
+         *
+         *     suspend fun getCharacters() = retrofitService.getCharacters()
+         *
+         */
         val categoriesDto = retrofitService.getRaceOptions()
 
-        val raceOptions: List<RaceOption> = categoriesDto.categories.map { category ->
-            val categoryName: String = category.name
-            var raceOptionsList = mutableListOf<RaceOption>()
+        return categoriesDto.categories.flatMap { dtoCategory ->
+            val mappedCategory = runCatching { //Esto es como un try catch
+                TraitsCategories.valueOf(dtoCategory.name)
+            }.getOrNull()
 
-            raceOptionsList.add(
-                category.options.map { option ->
+            if (mappedCategory == null) {
+                emptyList()
+            } else {
+                dtoCategory.options.map { option ->
                     RaceOption(
                         optionDescription = option.name,
                         optionCost = option.cost,
-                        optionCategory  = categoryName
-                    )
+                        optionCategory = mappedCategory )
                 }
-            )
-
             }
         }
-
-
-        //Tengo que convertir el DTO a una lista de RaceOption
-
+            .filter { it.optionCategory == category }
     }
-
-    /**
-    fun getRaceOptionsByCategory(category: TraitsCategories): List<RaceOption> {
-        return traits.filter {
-            it.optionCategory == category
-        }
-    }
-
-    */
-    /**
-    private val baseUrl = "https://rickandmortyapi.com/api/"
-
-    //Empezamos a inicializar primero Retrofit, siempre lazy.
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .addConverterFactory(Json {
-                ignoreUnknownKeys = true
-                coerceInputValues = true
-            }.asConverterFactory("application/json".toMediaType()))
-            .baseUrl(baseUrl)
-            .build()
-    }
-
-    private val retrofitService: RickAndMortyApiService by lazy {
-        retrofit.create(RickAndMortyApiService::class.java)
-    }
-
-    suspend fun getCharacters() = retrofitService.getCharacters()
-    */
-
-
-
-/**
-    private val traits = listOf<RaceOption>(
-        RaceOption(
-            optionDescription = "-50% Growth",
-            optionCost = -4,
-            optionCategory = TraitsCategories.POPULATION
-        ),
-        RaceOption(
-            optionDescription = "Standard",
-            optionCost = 0,
-            optionCategory = TraitsCategories.POPULATION
-        ),
-        RaceOption(
-            optionDescription = "+50% Growth",
-            optionCost = 3,
-            optionCategory = TraitsCategories.POPULATION
-        ),
-        RaceOption(
-            optionDescription = "+100% Growth",
-            optionCost = 6,
-            optionCategory = TraitsCategories.POPULATION
-        ),
-        RaceOption(
-            optionDescription = "-1/2 Food",
-            optionCost = -3,
-            optionCategory = TraitsCategories.FARMING
-        ),
-        RaceOption(
-            optionDescription = "Standard",
-            optionCost = 0,
-            optionCategory = TraitsCategories.FARMING
-        ),
-        RaceOption(
-            optionDescription = "+1 Food",
-            optionCost = 4,
-            optionCategory = TraitsCategories.FARMING
-        ),
-        RaceOption(
-            optionDescription = "+2 Food",
-            optionCost = 7,
-            optionCategory = TraitsCategories.FARMING
-        )
-    )
-
-    fun getRaceTraits(): List<RaceOption> = traits
-    fun getRaceOptionsByCategory(category: TraitsCategories): List<RaceOption> {
-        return traits.filter {
-            it.optionCategory == category
-        }
-    }
-
-    */
-
-    //Empezamos a inicializar primero Retrofit, siempre lazy.
-
-
-
-
-
-
-
 
 }
+
