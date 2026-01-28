@@ -22,11 +22,11 @@ fun RaceCreationScreen(
     modifier: Modifier = Modifier,
     uiState: RaceCreationUiState = RaceCreationUiState(),
     onPopulationOptionClick: (RaceOption) -> Unit,
-    onAgricultureOptionClick: (RaceOption) -> Unit
+    onFarmingOptionClick: (RaceOption) -> Unit
 ) {
 
     val populationOptions = uiState.populationOptions
-    val agricultureOptions = uiState.agricultureOptions
+    val farmingOptions = uiState.farmingOptions
 
     val remainingPoints = uiState.remainingPoints
 
@@ -54,7 +54,7 @@ fun RaceCreationScreen(
             onOptionClick = onPopulationOptionClick
         )
         CategoryOptions(
-            categoryName = TraitsCategories.AGRICULTURE.name,
+            categoryName = TraitsCategories.FARMING.name,
             options = agricultureOptions,
             selectedOption = selectedAgricultureOption,
             onOptionClick = onAgricultureOptionClick

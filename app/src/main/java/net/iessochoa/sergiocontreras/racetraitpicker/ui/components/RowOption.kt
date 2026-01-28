@@ -51,16 +51,17 @@ fun RowOption(
 @Preview(showBackground = true)
 @Composable
 fun RowOptionPreview() {
+    val option = RaceOption(
+        optionDescription = "Agricultura básica",
+        optionCost = 1,
+        optionCategory = TraitsCategories.POPULATION )
 
-    val option = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.AGRICULTURE).first()
-
-    RaceTraitPickerTheme() {
+    RaceTraitPickerTheme {
         RowOption(
             isSelected = true,
             isEnabled = true,
             onOptionClick = {},
-            option = option
-        )
+            option = option )
     }
 }
 
