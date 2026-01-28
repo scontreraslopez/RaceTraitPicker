@@ -1,23 +1,24 @@
 package net.iessochoa.sergiocontreras.racetraitpicker.ui.screens
 
-import net.iessochoa.sergiocontreras.racetraitpicker.data.RaceTraitsRepository
 import net.iessochoa.sergiocontreras.racetraitpicker.model.RaceOption
-import net.iessochoa.sergiocontreras.racetraitpicker.model.TraitsCategories
 
-data class RaceCreationUiData (
-    val populationOptions: List<RaceOption> = emptyList(),
-    val farmingOptions: List<RaceOption> = emptyList(),
+data class RaceCreationUiState(
+    // Datos de la pantalla (persisten siempre)
     val selectedPopulationOption: RaceOption? = null,
     val selectedFarmingOption: RaceOption? = null,
-    val remainingPoints: Int = 10
+    val remainingPoints: Int = 10,
+    // Estado de la petición (lógica excluyente para las opciones)
+    val requestStatus: RequestStatus = RequestStatus.Idle
 )
 
-/* Como ahora es nullable vamos a gestionar los estados para que no cortocircuite
-* Sealed interface para when táctico */
-sealed interface RaceCreationUiState {
-    data class Success(val uiData: RaceCreationUiData): RaceCreationUiState
-    object Error: RaceCreationUiState
-    object Loading: RaceCreationUiState
-    object Empty: RaceCreationUiState
+// Estado exclusivo solo para la carga de datos
+sealed interface RequestStatus {
+    object Idle : RequestStatus
+    object Loading : RequestStatus
+    data class Success(
+        val populationOptions: List<RaceOption>,
+        val farmingOptions: List<RaceOption>
+    ) : RequestStatus
+    object Error : RequestStatus
 }
 

@@ -13,63 +13,54 @@ import net.iessochoa.sergiocontreras.racetraitpicker.model.TraitsCategories
 
 class RaceCreationViewModel: ViewModel() {
 
-    // Digo que empiece cargando...
-    private val _uiState = MutableStateFlow<RaceCreationUiState>(RaceCreationUiState.Loading) //Ojo que esta línea es un pelín diferente con el sealed interface
+    private val _uiState = MutableStateFlow(RaceCreationUiState())
     val uiState: StateFlow<RaceCreationUiState> = _uiState.asStateFlow()
 
-
-    /* Me creo el bloque init para arrancar */
-
     init {
-        viewModelScope.launch {
+        loadRaceOptions()
+    }
 
+    private fun loadRaceOptions() {
+        _uiState.update { it.copy(requestStatus = RequestStatus.Loading) }
+
+        viewModelScope.launch {
             try {
                 val populationOptions = getRaceOptionsByCategory(TraitsCategories.POPULATION)
                 val farmingOptions = getRaceOptionsByCategory(TraitsCategories.FARMING)
 
-                _uiState.value = RaceCreationUiState.Success(
-                    RaceCreationUiData(
-                        populationOptions = populationOptions,
-                        farmingOptions = farmingOptions
+                _uiState.update {
+                    it.copy(
+                        requestStatus = RequestStatus.Success(
+                            populationOptions = populationOptions,
+                            farmingOptions = farmingOptions
+                        )
                     )
-                )
+                }
             } catch (e: Exception) {
-                _uiState.value = RaceCreationUiState.Error
+                _uiState.update { it.copy(requestStatus = RequestStatus.Error) }
             }
         }
     }
 
-
     fun onPopulationOptionClick(selectedOption: RaceOption) {
         _uiState.update { currentState ->
-            if (currentState is RaceCreationUiState.Success) {
-                val data = currentState.uiData
-                currentState.copy(
-                    uiData = data.copy(
-                        selectedPopulationOption = selectedOption,
-                        remainingPoints = data.remainingPoints + (data.selectedPopulationOption?.optionCost ?: 0) - selectedOption.optionCost
-                    )
-                )
-            } else currentState
+            currentState.copy(
+                selectedPopulationOption = selectedOption,
+                remainingPoints = currentState.remainingPoints +
+                    (currentState.selectedPopulationOption?.optionCost ?: 0) -
+                    selectedOption.optionCost
+            )
         }
     }
 
     fun onFarmingOptionClick(selectedOption: RaceOption) {
         _uiState.update { currentState ->
-            if (currentState is RaceCreationUiState.Success) {
-                val data = currentState.uiData
-                currentState.copy(
-                    uiData = data.copy(
-                        selectedFarmingOption = selectedOption,
-                        remainingPoints = data.remainingPoints + (data.selectedFarmingOption?.optionCost ?: 0) - selectedOption.optionCost
-                    )
-                )
-            } else currentState
+            currentState.copy(
+                selectedFarmingOption = selectedOption,
+                remainingPoints = currentState.remainingPoints +
+                    (currentState.selectedFarmingOption?.optionCost ?: 0) -
+                    selectedOption.optionCost
+            )
         }
     }
-
-
-    //(RaceOption) -> Unit = {selectedPopulationOption = it}
-
-
 }
