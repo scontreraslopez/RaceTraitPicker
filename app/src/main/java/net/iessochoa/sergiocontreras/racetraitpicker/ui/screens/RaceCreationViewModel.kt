@@ -22,11 +22,11 @@ class RaceCreationViewModel: ViewModel() {
         }
     }
 
-    fun onAgricultureOptionClick(selectedOption: RaceOption) {
+    fun onFarmingOptionClick(selectedOption: RaceOption) {
         _uiState.update { currentState ->
             currentState.copy(
-                selectedAgricultureOption = selectedOption,
-                remainingPoints = currentState.remainingPoints + currentState.selectedAgricultureOption.optionCost - selectedOption.optionCost
+                selectedFarmingOption = selectedOption,
+                remainingPoints = currentState.remainingPoints + currentState.selectedFarmingOption.optionCost - selectedOption.optionCost
             )
 
         }

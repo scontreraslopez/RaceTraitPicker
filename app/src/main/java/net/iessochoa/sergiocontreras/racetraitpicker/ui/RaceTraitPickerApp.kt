@@ -20,7 +20,7 @@ fun RaceTraitPickerApp() {
     val viewModel: RaceCreationViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val onPopulationOptionClick: (RaceOption) -> Unit = { selectedOption -> viewModel.onPopulationOptionClick(selectedOption) }
-    val onAgricultureOptionClick: (RaceOption) -> Unit = { selectedOption -> viewModel.onAgricultureOptionClick(selectedOption) }
+    val onFarmingOptionClick: (RaceOption) -> Unit = { selectedOption -> viewModel.onFarmingOptionClick(selectedOption) }
 
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -28,7 +28,7 @@ fun RaceTraitPickerApp() {
             modifier = Modifier.padding(innerPadding),
             uiState = uiState,
             onPopulationOptionClick = onPopulationOptionClick,
-            onAgricultureOptionClick = onAgricultureOptionClick
+            onFarmingOptionClick = onFarmingOptionClick
         )
     }
 }

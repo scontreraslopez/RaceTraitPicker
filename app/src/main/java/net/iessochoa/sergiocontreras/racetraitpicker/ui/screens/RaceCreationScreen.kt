@@ -34,7 +34,7 @@ fun RaceCreationScreen(
 
 
     val selectedPopulationOption = uiState.selectedPopulationOption
-    val selectedAgricultureOption = uiState.selectedAgricultureOption
+    val selectedFarmingOption = uiState.selectedFarmingOption
 
     Column(
         modifier = modifier
@@ -43,8 +43,8 @@ fun RaceCreationScreen(
             Pair(option, option.optionCost <= (remainingPoints + selectedPopulationOption.optionCost))
         }
 
-        val agricultureOptions = agricultureOptions.map { option ->
-            Pair(option, option.optionCost <= remainingPoints  + selectedAgricultureOption.optionCost)
+        val farmingOptions = farmingOptions.map { option ->
+            Pair(option, option.optionCost <= remainingPoints  + selectedFarmingOption.optionCost)
         }
 
         CategoryOptions(
@@ -55,9 +55,9 @@ fun RaceCreationScreen(
         )
         CategoryOptions(
             categoryName = TraitsCategories.FARMING.name,
-            options = agricultureOptions,
-            selectedOption = selectedAgricultureOption,
-            onOptionClick = onAgricultureOptionClick
+            options = farmingOptions,
+            selectedOption = selectedFarmingOption,
+            onOptionClick = onFarmingOptionClick
         )
 
         Text(
@@ -76,9 +76,7 @@ fun RaceCreationScreenPreview() {
     RaceTraitPickerTheme() {
        RaceCreationScreen(
            onPopulationOptionClick = {},
-           onAgricultureOptionClick = {}
+           onFarmingOptionClick = {}
        )
     }
 }
-
-

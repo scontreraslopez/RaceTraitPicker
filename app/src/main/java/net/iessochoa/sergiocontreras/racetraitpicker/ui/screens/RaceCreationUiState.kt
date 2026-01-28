@@ -6,8 +6,8 @@ import net.iessochoa.sergiocontreras.racetraitpicker.model.TraitsCategories
 
 data class RaceCreationUiState (
     val populationOptions: List<RaceOption> = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.POPULATION),
-    val agricultureOptions: List<RaceOption> = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.AGRICULTURE),
+    val farmingOptions: List<RaceOption> = RaceTraitsRepository.getRaceOptionsByCategory(TraitsCategories.FARMING),
     val selectedPopulationOption: RaceOption = populationOptions[1],
-    val selectedAgricultureOption: RaceOption = agricultureOptions[1],
+    val selectedFarmingOption: RaceOption = farmingOptions[1],
     val remainingPoints: Int = 10
 )

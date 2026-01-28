@@ -43,6 +43,9 @@ object RaceTraitsRepository {
          *
          *     suspend fun getCharacters() = retrofitService.getCharacters()
          *
+         *
+         * Nótese que esto mezcla la obtención de datos con la transformación de datos (mapper) y se podría separar
+         *          *
          */
         val categoriesDto = retrofitService.getRaceOptions()
 
