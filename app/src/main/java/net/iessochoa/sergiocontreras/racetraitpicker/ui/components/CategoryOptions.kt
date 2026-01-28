@@ -15,7 +15,7 @@ import net.iessochoa.sergiocontreras.racetraitpicker.ui.theme.Typography
 fun CategoryOptions(
     categoryName: String,
     options: List<Pair<RaceOption, Boolean>>,
-    selectedOption: RaceOption,
+    selectedOption: RaceOption?,
     onOptionClick: (RaceOption) -> Unit,
     modifier: Modifier = Modifier
 ) {

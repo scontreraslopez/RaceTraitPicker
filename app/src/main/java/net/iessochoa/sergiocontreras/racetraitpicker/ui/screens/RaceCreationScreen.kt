@@ -16,57 +16,63 @@ import net.iessochoa.sergiocontreras.racetraitpicker.model.RaceOption
 import net.iessochoa.sergiocontreras.racetraitpicker.model.TraitsCategories
 import net.iessochoa.sergiocontreras.racetraitpicker.ui.components.CategoryOptions
 import net.iessochoa.sergiocontreras.racetraitpicker.ui.theme.RaceTraitPickerTheme
+import kotlin.text.compareTo
 
 @Composable
 fun RaceCreationScreen(
     modifier: Modifier = Modifier,
-    uiState: RaceCreationUiState = RaceCreationUiState(),
+    uiState: RaceCreationUiState = RaceCreationUiState.Loading,
     onPopulationOptionClick: (RaceOption) -> Unit,
     onFarmingOptionClick: (RaceOption) -> Unit
 ) {
 
-    val populationOptions = uiState.populationOptions
-    val farmingOptions = uiState.farmingOptions
+    when (uiState) {
+        is RaceCreationUiState.Success -> {
+            val data = uiState.uiData
+            val populationOptions = data.populationOptions
+            val farmingOptions = data.farmingOptions
+            val remainingPoints = data.remainingPoints
+            val selectedPopulationOption = data.selectedPopulationOption
+            val selectedFarmingOption = data.selectedFarmingOption
 
-    val remainingPoints = uiState.remainingPoints
+            Column(
+                modifier = modifier
+            ) {
+                val populationOptions = populationOptions.map { option ->
+                    Pair(option, option.optionCost <= (remainingPoints + (selectedPopulationOption?.optionCost ?: 0)))
+                }
 
-    //var remainingPoints by remember { mutableIntStateOf(10) }
+                val farmingOptions = farmingOptions.map { option ->
+                    Pair(option, option.optionCost <= (remainingPoints + (selectedFarmingOption?.optionCost ?: 0)))
+                }
+
+                CategoryOptions(
+                    categoryName = TraitsCategories.POPULATION.name,
+                    options = populationOptions,
+                    selectedOption = selectedPopulationOption,
+                    onOptionClick = onPopulationOptionClick
+                )
+                CategoryOptions(
+                    categoryName = TraitsCategories.FARMING.name,
+                    options = farmingOptions,
+                    selectedOption = selectedFarmingOption,
+                    onOptionClick = onFarmingOptionClick
+                )
+
+                Text(
+                    text = "Remaining points: ${remainingPoints.toString()}"
+                )
 
 
-    val selectedPopulationOption = uiState.selectedPopulationOption
-    val selectedFarmingOption = uiState.selectedFarmingOption
 
-    Column(
-        modifier = modifier
-    ) {
-        val populationOptions = populationOptions.map { option ->
-            Pair(option, option.optionCost <= (remainingPoints + selectedPopulationOption.optionCost))
+            }
         }
-
-        val farmingOptions = farmingOptions.map { option ->
-            Pair(option, option.optionCost <= remainingPoints  + selectedFarmingOption.optionCost)
-        }
-
-        CategoryOptions(
-            categoryName = TraitsCategories.POPULATION.name,
-            options = populationOptions,
-            selectedOption = selectedPopulationOption,
-            onOptionClick = onPopulationOptionClick
-        )
-        CategoryOptions(
-            categoryName = TraitsCategories.FARMING.name,
-            options = farmingOptions,
-            selectedOption = selectedFarmingOption,
-            onOptionClick = onFarmingOptionClick
-        )
-
-        Text(
-            text = "Remaining points: ${remainingPoints.toString()}"
-        )
-
-
+        is RaceCreationUiState.Empty -> {}
+        is RaceCreationUiState.Error -> {}
+        is RaceCreationUiState.Loading -> {}
 
     }
+
 }
 
 
