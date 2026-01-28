@@ -51,7 +51,7 @@ object RaceTraitsRepository {
 
         return categoriesDto.categories.flatMap { dtoCategory ->
             val mappedCategory = runCatching { //Esto es como un try catch
-                TraitsCategories.valueOf(dtoCategory.name)
+                TraitsCategories.valueOf(dtoCategory.name.uppercase())
             }.getOrNull()
 
             if (mappedCategory == null) {
