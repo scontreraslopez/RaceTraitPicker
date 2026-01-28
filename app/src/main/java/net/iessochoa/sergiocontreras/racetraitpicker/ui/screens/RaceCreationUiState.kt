@@ -4,7 +4,7 @@ import net.iessochoa.sergiocontreras.racetraitpicker.data.RaceTraitsRepository
 import net.iessochoa.sergiocontreras.racetraitpicker.model.RaceOption
 import net.iessochoa.sergiocontreras.racetraitpicker.model.TraitsCategories
 
-data class RaceCreationUiState (
+data class RaceCreationUiData (
     val populationOptions: List<RaceOption> = emptyList(),
     val farmingOptions: List<RaceOption> = emptyList(),
     val selectedPopulationOption: RaceOption? = null,
@@ -14,10 +14,10 @@ data class RaceCreationUiState (
 
 /* Como ahora es nullable vamos a gestionar los estados para que no cortocircuite
 * Sealed interface para when táctico */
-sealed interface RaceCreationUiStatus {
-    data class Success(val raceCreationUiState: RaceCreationUiState): RaceCreationUiStatus
-    object Error: RaceCreationUiStatus
-    object Loading: RaceCreationUiStatus
-    object Empty: RaceCreationUiStatus
+sealed interface RaceCreationUiState {
+    data class Success(val raceCreationUiData: RaceCreationUiData): RaceCreationUiState
+    object Error: RaceCreationUiState
+    object Loading: RaceCreationUiState
+    object Empty: RaceCreationUiState
 }
 

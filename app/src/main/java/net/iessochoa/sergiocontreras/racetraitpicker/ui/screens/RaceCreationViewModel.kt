@@ -12,6 +12,11 @@ class RaceCreationViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(RaceCreationUiState())
     val uiState: StateFlow<RaceCreationUiState> = _uiState.asStateFlow()
 
+    /* Me creo el bloque init para arrancar */
+    init {
+
+    }
+
     fun onPopulationOptionClick(selectedOption: RaceOption) {
         _uiState.update { currentState ->
             currentState.copy(
